@@ -5,12 +5,15 @@
   "main": "app.js",
   "scripts": {
     "mayapp": "nodemon app.js",
-    "maycow": "nodemon cowsay.js"
+    "start": "node server.js"
   },
   "author": "Rikku",
   "license": "ISC",
   "dependencies": {
     "nodemon": "^2.0.15",
     "uuid": "^8.3.2"
+  },
+  "engines":{
+    "node": "14.x"
   }
 }
