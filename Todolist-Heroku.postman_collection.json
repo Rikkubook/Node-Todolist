@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "bb8c732c-40eb-4c65-a478-8c0830a88615",
+		"name": "Todolist-Heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "查看全部",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://morning-everglades-10631.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"morning-everglades-10631",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增一筆",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"今天要刷牙3\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-everglades-10631.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"morning-everglades-10631",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除全部",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"今天要刷牙\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-everglades-10631.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"morning-everglades-10631",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"今天要刷牙\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-everglades-10631.herokuapp.com/todos/f336ba63-90b4-49d5-83de-915553bf2bb6",
+					"protocol": "https",
+					"host": [
+						"morning-everglades-10631",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						"f336ba63-90b4-49d5-83de-915553bf2bb6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "編輯單筆",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"修改今天要刷牙2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://morning-everglades-10631.herokuapp.com/todos/0b9fc766-b0c2-447d-9637-60abd73e385e",
+					"protocol": "https",
+					"host": [
+						"morning-everglades-10631",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						"0b9fc766-b0c2-447d-9637-60abd73e385e"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
