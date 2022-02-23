@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const errorHandle = require('./errorHandle');
 
 const todos = [
-    {"title": "今天要刷牙", "id": uuidv4() } //假資料，重啟動伺服器時會產生
+    //{"title": "今天要刷牙", "id": uuidv4() } //假資料，重啟動伺服器時會產生
 ];
 
 const server = http.createServer((req, res) => {
