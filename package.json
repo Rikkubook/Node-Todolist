@@ -13,7 +13,7 @@
     "nodemon": "^2.0.15",
     "uuid": "^8.3.2"
   },
-  "engines":{
+  "engines": {
     "node": "14.x"
   }
 }

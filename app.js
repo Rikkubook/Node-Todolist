@@ -1,18 +1,21 @@
+
+const {ErrorHandle, SuccessHandle} = require ('./handler.js');
+
 const http = require('http');
 const { v4: uuidv4 } = require('uuid'); 
-const errorHandle = require('./errorHandle');
+
 
 const todoList = [
     //{"title": "今天要刷牙", "id": uuidv4() } //假資料，重啟動伺服器時會產生
 ];
 
 const server = http.createServer((req, res) => {
-    const Header =(number) =>  res.writeHead(number, {
+    const Header = (number) =>  res.writeHead(number, {
         'Content-Type': 'application/json' ,
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
         'Access-Control-Allow-Origin':  '*',
         'Access-Control-Allow-Methods': 'POST, GET, OPTIONS,DELETE'
-       }); // 預設文字檔案
+    }); // 預設文字檔案
 
     let body =""
     req.on('data', chunk =>{
@@ -24,11 +27,7 @@ const server = http.createServer((req, res) => {
         switch(method){
             case 'GET': 
                 Header(200) 
-                res.write(JSON.stringify({
-                    "status": "success",
-                    "data": todoList
-                }));
-                res.end()
+                SuccessHandle(res, todoList)
                 break;
             case 'POST':
                 req.on('end',()=>{
@@ -41,39 +40,21 @@ const server = http.createServer((req, res) => {
                             }
                             todoList.push(todo);
                             Header(200) 
-                            res.write(JSON.stringify({
-                                "status": "success",
-                                "data": todoList
-                            }));
-                            res.end();
+                            SuccessHandle(res, todoList)
                         }else{
-                            Header(400) 
-                            res.write(JSON.stringify({
-                                "status": "false",
-                                "data": "沒有 title"
-                            }));
-                            res.end();
+                            Header(400)
+                            ErrorHandle(res, '沒有 title')
                         }
                     }catch(error){ // 非JSON格式
-                        console.log("Error");
-                        console.log(error);
                         Header(400) 
-                        res.write(JSON.stringify({
-                            "status": "false",
-                            "data": "欄位未填寫正確，或無此 todo id"
-                        }));
-                        res.end();
+                        ErrorHandle(res, '欄位未填寫正確，或無此 todo id')
                     }
                 })
                 break;
             case 'DELETE':
                 todoList.length = 0;
                 Header(200) 
-                res.write(JSON.stringify({
-                    "status": "success",
-                    "data": todoList,
-                    "message": "全部刪除成功"
-                }));
+                SuccessHandle(res, todoList, "全部刪除成功")
                 res.end();
             break;
             default:
@@ -83,74 +64,47 @@ const server = http.createServer((req, res) => {
         let method =  req.method
         switch(method){
             case 'DELETE':
-                const id = req.url.split('/').pop();
-                const index = todoList.findIndex(item => item.id === id); //找索引
-                if(index !== -1){
-                    todoList.splice(index, 1);
-                    Header(200) 
-                    res.write(JSON.stringify({
-                        "status": "success",
-                        "data": todoList,
-                    }));
-                    res.end();
-                }else{
-                    Header(404) 
-                    res.write(JSON.stringify({
-                        "status": "false",
-                        "data": "刪除"
-                    }));
-                    res.end();
-                }
-                break;
+            const id = req.url.split('/').pop();
+            const index = todoList.findIndex(item => item.id === id); //找索引
+            if(index !== -1){
+                todoList.splice(index, 1);
+                Header(200) 
+                SuccessHandle(res, todoList)
+            }else{
+                Header(404) 
+                ErrorHandle(res, '欄位未填寫正確，或無此 todo id')
+            }
+            break;
             case 'PATCH':
-                req.on('end',()=>{
-                    try{
-                        const title = JSON.parse(body).title;
-                        const id = req.url.split('/').pop();
-                        const index = todoList.findIndex(item => item.id === id); //找索引
-        
-                        if(title !== undefined &&  index !== -1){ //
-                            todoList[index].title = title
-                            Header(200) 
-                            res.write(JSON.stringify({
-                                "status": "success",
-                                "data": todoList
-                            }));
-                            res.end();
-                        }else{
-                            Header(400) 
-                            res.write(JSON.stringify({
-                                "status": "false",
-                                "data": "沒有 title"
-                            }));
-                            res.end();
-                        }
-                    }catch(error){ // 非JSON格式
-                        console.log("Error");
-                        console.log(error);
-                        Header(400) 
-                        res.write(JSON.stringify({
-                            "status": "false",
-                            "data": "欄位未填寫正確，或無此 todo id"
-                        }));
-                        res.end();
+            req.on('end',()=>{
+                try{
+                    const title = JSON.parse(body).title;
+                    const id = req.url.split('/').pop();
+                    const index = todoList.findIndex(item => item.id === id); //找索引
+    
+                    if(title !== undefined &&  index !== -1){ //
+                        todoList[index].title = title
+                        Header(200) 
+                        SuccessHandle(res, todoList)
+                    }else{
+                        Header(400)
+                        ErrorHandle(res, '沒有 title')
                     }
-                })
-                break;
+                  }catch(error){ // 非JSON格式
+                    Header(400) 
+                    ErrorHandle(res, '欄位未填寫正確，或無此 todo id')
+                }
+            })
+            break;
             default:
                 console.log(`Sorry, we are out of ${method}.`);
         }
     }else if(req.method === 'OPTIONS'){
         Header(200) 
-        console.log('經過OPTIONS');
-        res.end()
+        SuccessHandle(res, [], "經過OPTIONS")
     }else {
         Header(404) 
-        res.write(JSON.stringify({
-            "status": "false",
-            "data": "沒有此路由"
-        }));
-        res.end()
+        ErrorHandle(res, '沒有此路由')
     }
 })
 
